@@ -1,2 +1,2 @@
 # jack-slashfic
-A randomly-generated smut prompt machine.
+A randomly-generated shitpost + meme prompt machine.
