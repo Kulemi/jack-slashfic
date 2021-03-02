@@ -1,4 +1,4 @@
-import os, json
+import os, json, breed
 from random import choice, randint
 
 from discord.ext import commands
@@ -24,6 +24,7 @@ class File_Stuff:
     tags = json.loads(tags_raw)
     character = list(json.loads(ChSpVe_raw).keys())
     ChSpVe = json.loads(ChSpVe_raw)
+    
     
 class Discord_Stuff:
     kink_s_channel = 815007678472519680
@@ -65,12 +66,20 @@ async def randomSlash(ctx):
 
 @bot.command(name="slash", brief="Choose one character to slash with another (random) character")
 async def specSlash(ctx, *userInput):
-    inputChar = " ".join(userInput)
-    if inputChar in File_Ongoing.character:
-        firstChar = inputChar
-        await slashGen(firstChar, ctx)
+    firstChar = " ".join(userInput)
+    await slashGen(firstChar, ctx)
+        
+@bot.command(name="fanfic", brief="Create a small cursed snippet involving 1 or more characters.")
+async def fanfic(ctx, *userInput):
+    firstChar = " ".join(userInput)
+    secondChar = choice(File_Stuff.character)
+    if firstChar == "random":
+        await ctx.send(breed.spawner(choice(File_Stuff.character), secondChar))
+    elif firstChar == "":
+        await ctx.send("Please include a character, or use \"random\" to randomly choose a character.")
     else:
-        await ctx.send(f"Cannot find character {inputChar}")
+        await ctx.send(breed.spawner(firstChar, secondChar))
+        
         
 @bot.command(name="password", brief="Not yet implemented lmfao")
 async def password(ctx, passwordInput):
@@ -85,6 +94,7 @@ async def password(ctx, passwordInput):
 async def updateFiles(ctx):
     if ctx.message.author.id == godKing:
         File_Ongoing = File_Stuff()
+        breed.update()
         await ctx.send("Updated files.")
     else:
         await ctx.send(f"You are not the admin. The admin is {godKing}, and you are {ctx.message.author.id}")
